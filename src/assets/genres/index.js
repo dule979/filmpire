@@ -19,7 +19,7 @@ import war from './war.png';
 import western from './western.png';
 
 import popular from './popular.png';
-import topRated from './top rated.png';
+import topRated from './top_rated.png';
 import upcoming from './upcoming.png';
 
 export default {
@@ -44,6 +44,6 @@ export default {
   western,
 
   popular,
-  'top rated': topRated,
+  top_rated: topRated,
   upcoming,
 };

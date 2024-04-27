@@ -10,12 +10,15 @@ import {
   useTheme,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import useStyles from './styles';
 import { useGetGenresQuery } from '../../services/TMDB';
 import genreIcons from '../../assets/genres';
+import { selectGenreOrCategory } from '../../features/currentGenreOrCategory';
 
 const categories = [
-  { label: 'Top Rated', value: 'top rated' },
+  { label: 'Top Rated', value: 'top_rated' },
   { label: 'Popular', value: 'popular' },
   { label: 'Upcoming', value: 'upcoming' },
 ];
@@ -28,6 +31,8 @@ const redLogo =
   'https://fontmeme.com/permalink/210930/6854ae5c7f76597cf8680e48a2c8a50a.png';
 
 function Sidebar() {
+  const [page, setPage] = useState(1);
+  const dispatch = useDispatch();
   const theme = useTheme();
   const classes = useStyles();
   const { data, isFetching } = useGetGenresQuery();
@@ -46,7 +51,10 @@ function Sidebar() {
         {categories.map(({ label, value }) => {
           return (
             <Link key={label} to="/" className={classes.links}>
-              <ListItem onClick={() => {}} button>
+              <ListItem
+                onClick={() => dispatch(selectGenreOrCategory(value))}
+                button
+              >
                 <ListItemIcon>
                   <img
                     src={genreIcons[value.toLowerCase()]}
@@ -71,7 +79,10 @@ function Sidebar() {
           data.genres.map(({ name, id }) => {
             return (
               <Link key={name} to="/" className={classes.links}>
-                <ListItem onClick={() => {}} button>
+                <ListItem
+                  onClick={() => dispatch(selectGenreOrCategory(id))}
+                  button
+                >
                   <ListItemIcon>
                     <img
                       src={genreIcons[name.toLowerCase()]}

@@ -8,14 +8,37 @@ export const tmdbApi = createApi({
   endpoints: (builder) => ({
     // Get Movies by [Type]
     getMovies: builder.query({
-      query: () => ({
-        url: 'movie/popular?page=1',
-        method: 'GET',
-        headers: {
-          accept: 'application/json',
-          Authorization: `Bearer ${tmdbToken}`,
-        },
-      }),
+      query: ({ genreIdOrCategoryName, page }) => {
+        // GET popular movies
+        let url = `movie/popular?${page}`;
+
+        // GET movies by categories
+        if (
+          // eslint-disable-next-line operator-linebreak
+          genreIdOrCategoryName &&
+          typeof genreIdOrCategoryName === 'string'
+        ) {
+          url = `movie/${genreIdOrCategoryName}?${page}`;
+        }
+
+        // GET movies by genres
+        if (
+          // eslint-disable-next-line operator-linebreak
+          genreIdOrCategoryName &&
+          typeof genreIdOrCategoryName === 'number'
+        ) {
+          url = `discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=vote_count.desc&with_genres=${genreIdOrCategoryName}`;
+        }
+
+        return {
+          url,
+          method: 'GET',
+          headers: {
+            accept: 'application/json',
+            Authorization: `Bearer ${tmdbToken}`,
+          },
+        };
+      },
     }),
 
     // Get Genres
