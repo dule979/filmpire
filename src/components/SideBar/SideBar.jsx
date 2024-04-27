@@ -3,31 +3,34 @@ import {
   ListItem,
   ListItemText,
   ListSubheader,
+  ListItemIcon,
   Divider,
+  Box,
+  CircularProgress,
   useTheme,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import useStyles from './styles';
+import { useGetGenresQuery } from '../../services/TMDB';
+import genreIcons from '../../assets/genres';
 
 const categories = [
-  { label: 'Top Rated', value: 'top_rated' },
+  { label: 'Top Rated', value: 'top rated' },
   { label: 'Popular', value: 'popular' },
   { label: 'Upcoming', value: 'upcoming' },
 ];
 
-const genres = [
-  { label: 'Action', value: 'action' },
-  { label: 'Comedy', value: 'comedy' },
-  { label: 'Horror', value: 'horror' },
-  { label: 'Animation', value: 'animation' },
-];
-
-const blueLogo = 'https://fontmeme.com/permalink/210930/8531c658a743debe1e1aa1a2fc82006e.png';
-const redLogo = 'https://fontmeme.com/permalink/210930/6854ae5c7f76597cf8680e48a2c8a50a.png';
+// eslint-disable-next-line operator-linebreak
+const blueLogo =
+  'https://fontmeme.com/permalink/210930/8531c658a743debe1e1aa1a2fc82006e.png';
+// eslint-disable-next-line operator-linebreak
+const redLogo =
+  'https://fontmeme.com/permalink/210930/6854ae5c7f76597cf8680e48a2c8a50a.png';
 
 function Sidebar() {
   const theme = useTheme();
   const classes = useStyles();
+  const { data, isFetching } = useGetGenresQuery();
 
   return (
     <>
@@ -42,15 +45,15 @@ function Sidebar() {
         <ListSubheader>Categories</ListSubheader>
         {categories.map(({ label, value }) => {
           return (
-            <Link key={value} to="/" className={classes.links}>
+            <Link key={label} to="/" className={classes.links}>
               <ListItem onClick={() => {}} button>
-                {/* <ListItemIcon>
+                <ListItemIcon>
                   <img
-                    src={blueLogo}
+                    src={genreIcons[value.toLowerCase()]}
                     height={30}
                     className={classes.genreImages}
                   />
-                </ListItemIcon> */}
+                </ListItemIcon>
                 <ListItemText primary={label} />
               </ListItem>
             </Link>
@@ -60,22 +63,28 @@ function Sidebar() {
       <Divider />
       <List>
         <ListSubheader>Genres</ListSubheader>
-        {genres.map(({ label, value }) => {
-          return (
-            <Link key={value} to="/" className={classes.links}>
-              <ListItem onClick={() => {}} button>
-                {/* <ListItemIcon>
-                  <img
-                    src={blueLogo}
-                    height={30}
-                    className={classes.genreImages}
-                  />
-                </ListItemIcon> */}
-                <ListItemText primary={label} />
-              </ListItem>
-            </Link>
-          );
-        })}
+        {isFetching ? (
+          <Box display="flex" justifyContent="center">
+            <CircularProgress />
+          </Box>
+        ) : (
+          data.genres.map(({ name, id }) => {
+            return (
+              <Link key={name} to="/" className={classes.links}>
+                <ListItem onClick={() => {}} button>
+                  <ListItemIcon>
+                    <img
+                      src={genreIcons[name.toLowerCase()]}
+                      height={30}
+                      className={classes.genreImages}
+                    />
+                  </ListItemIcon>
+                  <ListItemText primary={name} />
+                </ListItem>
+              </Link>
+            );
+          })
+        )}
       </List>
     </>
   );

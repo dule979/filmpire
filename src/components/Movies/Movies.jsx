@@ -1,15 +1,10 @@
-import {
-  Box,
-  CircularProgress,
-  Typography,
-} from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 import { useGetMoviesQuery } from '../../services/TMDB';
 import MovieList from '../MovieList/MovieList';
 
 function Movies() {
   const { data, error, isFetching } = useGetMoviesQuery();
 
-  console.log(data);
   if (isFetching) {
     return (
       <Box display="flex" justifyContent="center">
@@ -30,7 +25,7 @@ function Movies() {
     return (
       <Box display="flex" justifyContent="center" mt="20px">
         <Typography variant="h4">
-          No movies that match that name
+          No movies that match that name.
           <br />
           Please search for something else.
         </Typography>
