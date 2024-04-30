@@ -27,7 +27,7 @@ function Movie({ movie, i }) {
                 : 'https://fillmurray.com/200/300'
             }
           />
-          <Typography variant="h5" className={classes.title}>
+          <Typography variant="h6" className={classes.title}>
             {movie.title}
           </Typography>
           <Tooltip disableTouchListener title={`${movie.vote_average.toFixed(1)} / 10`}>

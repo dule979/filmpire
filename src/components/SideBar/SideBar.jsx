@@ -10,7 +10,6 @@ import {
   useTheme,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import useStyles from './styles';
 import { useGetGenresQuery } from '../../services/TMDB';
@@ -31,7 +30,6 @@ const redLogo =
   'https://fontmeme.com/permalink/210930/6854ae5c7f76597cf8680e48a2c8a50a.png';
 
 function Sidebar() {
-  const [page, setPage] = useState(1);
   const dispatch = useDispatch();
   const theme = useTheme();
   const classes = useStyles();

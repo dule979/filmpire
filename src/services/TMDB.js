@@ -8,7 +8,7 @@ export const tmdbApi = createApi({
   endpoints: (builder) => ({
     // Get Movies by [Type]
     getMovies: builder.query({
-      query: ({ genreIdOrCategoryName, page }) => {
+      query: ({ genreIdOrCategoryName, page, searchQuery }) => {
         // GET popular movies
         let url = `movie/popular?${page}`;
 
@@ -28,6 +28,11 @@ export const tmdbApi = createApi({
           typeof genreIdOrCategoryName === 'number'
         ) {
           url = `discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=vote_count.desc&with_genres=${genreIdOrCategoryName}`;
+        }
+
+        // search movies
+        if (searchQuery) {
+          url = `https://api.themoviedb.org/3/search/movie?query=${searchQuery}&include_adult=false&${page}`;
         }
 
         return {
@@ -53,7 +58,43 @@ export const tmdbApi = createApi({
         },
       }),
     }),
+
+    // GET movie
+    getMovie: builder.query({
+      query: (id) => ({
+        url: `movie/${id}?&append_to_response=videos`,
+        method: 'GET',
+        headers: {
+          accept: 'application/json',
+          Authorization: `Bearer ${tmdbToken}`,
+        },
+      }),
+    }),
+
+    // GET movie cast
+    getCast: builder.query({
+      query: (id) => ({
+        url: `movie/${id}/credits`,
+        method: 'GET',
+        headers: {
+          accept: 'application/json',
+          Authorization: `Bearer ${tmdbToken}`,
+        },
+      }),
+    }),
+
+    // GET recommended movies
+    getRecommendations: builder.query({
+      query: (id) => ({
+        url: `movie/${id}/recommendations`,
+        method: 'GET',
+        headers: {
+          accept: 'application/json',
+          Authorization: `Bearer ${tmdbToken}`,
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetMoviesQuery, useGetGenresQuery } = tmdbApi;
+export const { useGetMoviesQuery, useGetGenresQuery, useGetMovieQuery, useGetCastQuery, useGetRecommendationsQuery } = tmdbApi;

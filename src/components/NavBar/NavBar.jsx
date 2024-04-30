@@ -17,15 +17,19 @@ import {
 import { Link } from 'react-router-dom';
 import { useTheme } from '@mui/styles';
 import Sidebar from '../SideBar/SideBar';
+import Search from '../Search/Search';
 
 import useStyles from './styles';
+import {
+  fetchToken,
+} from '../../utils';
 
 function NavBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const classes = useStyles();
   const isMobile = useMediaQuery('(max-width: 600px)');
   const theme = useTheme();
-  const isAuthenticated = true;
+  const isAuthenticated = false;
 
   return (
     <>
@@ -47,10 +51,10 @@ function NavBar() {
           <IconButton color="inherit" onClick={() => {}} sx={{ ml: 1 }}>
             {theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
           </IconButton>
-          {!isMobile && 'Search...'}
+          {!isMobile && <Search />}
           <div>
             {!isAuthenticated ? (
-              <Button color="inherit" onClick={() => {}}>
+              <Button color="inherit" onClick={fetchToken}>
                 Login &nbsp; <AccountCircle />
               </Button>
             ) : (
@@ -70,7 +74,7 @@ function NavBar() {
               </Button>
             )}
           </div>
-          {isMobile && 'Search...'}
+          {isMobile && <Search />}
         </Toolbar>
       </AppBar>
       <div>
