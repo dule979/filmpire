@@ -10,7 +10,7 @@ export const tmdbApi = createApi({
     getMovies: builder.query({
       query: ({ genreIdOrCategoryName, page, searchQuery }) => {
         // GET popular movies
-        let url = `movie/popular?${page}`;
+        let url = `movie/popular?page=${page}`;
 
         // GET movies by categories
         if (
@@ -18,7 +18,7 @@ export const tmdbApi = createApi({
           genreIdOrCategoryName &&
           typeof genreIdOrCategoryName === 'string'
         ) {
-          url = `movie/${genreIdOrCategoryName}?${page}`;
+          url = `movie/${genreIdOrCategoryName}?page=${page}`;
         }
 
         // GET movies by genres
@@ -27,12 +27,12 @@ export const tmdbApi = createApi({
           genreIdOrCategoryName &&
           typeof genreIdOrCategoryName === 'number'
         ) {
-          url = `discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=vote_count.desc&with_genres=${genreIdOrCategoryName}`;
+          url = `discover/movie?include_adult=false&include_video=false&language=en-US&page=${page}&sort_by=vote_count.desc&with_genres=${genreIdOrCategoryName}`;
         }
 
         // search movies
         if (searchQuery) {
-          url = `https://api.themoviedb.org/3/search/movie?query=${searchQuery}&include_adult=false&${page}`;
+          url = `https://api.themoviedb.org/3/search/movie?query=${searchQuery}&include_adult=false&page=${page}`;
         }
 
         return {
@@ -94,7 +94,39 @@ export const tmdbApi = createApi({
         },
       }),
     }),
+
+    // GET actor biography
+    getActorBiography: builder.query({
+      query: (id) => ({
+        url: `person/${id}`,
+        method: 'GET',
+        headers: {
+          accept: 'application/json',
+          Authorization: `Bearer ${tmdbToken}`,
+        },
+      }),
+    }),
+
+    // GET list of movies by actor
+    getMoviesByActor: builder.query({
+      query: (id) => ({
+        url: `person/${id}/movie_credits`,
+        method: 'GET',
+        headers: {
+          accept: 'application/json',
+          Authorization: `Bearer ${tmdbToken}`,
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetMoviesQuery, useGetGenresQuery, useGetMovieQuery, useGetCastQuery, useGetRecommendationsQuery } = tmdbApi;
+export const {
+  useGetMoviesQuery,
+  useGetGenresQuery,
+  useGetMovieQuery,
+  useGetCastQuery,
+  useGetRecommendationsQuery,
+  useGetActorBiographyQuery,
+  useGetMoviesByActorQuery,
+} = tmdbApi;

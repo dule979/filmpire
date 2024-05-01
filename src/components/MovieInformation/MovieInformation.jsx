@@ -43,7 +43,6 @@ function MovieInformation() {
   const { data: recommended } = useGetRecommendationsQuery(id);
   const classes = useStyles();
   const dispatch = useDispatch();
-  console.log(data);
 
   const isFavorited = false;
   const isWatchlisted = false;
@@ -144,7 +143,7 @@ function MovieInformation() {
                       md={2}
                       component={Link}
                       style={{ textDecoration: 'none' }}
-                      to="/actors"
+                      to={`/actor/${character.id}`}
                     >
                       <img
                         className={classes.castImage}
@@ -232,7 +231,7 @@ function MovieInformation() {
           You might also like
         </Typography>
         {recommended ? (
-          <MovieList movies={recommended} numberOfMovies={12} />
+          <MovieList movies={recommended?.results} numberOfMovies={12} />
         ) : (
           <Box>There is no recommended movies</Box>
         )}
@@ -243,16 +242,18 @@ function MovieInformation() {
         onClose={() => setOpen(false)}
         className={classes.modal}
       >
-        {data?.videos?.results?.length > 0 && (
-          <iframe
-            autoPlay
-            title="Trailers"
-            className={classes.video}
-            style={{ border: 'none' }}
-            src={`https://youtube.com/embed/${data.videos.results[0].key}`}
-            allow="autoplay"
-          />
-        )}
+        <div>
+          {data?.videos?.results?.length > 0 && (
+            <iframe
+              autoPlay
+              title="Trailers"
+              className={classes.video}
+              style={{ border: 'none' }}
+              src={`https://youtube.com/embed/${data.videos.results[0].key}`}
+              allow="autoplay"
+            />
+          )}
+        </div>
       </Modal>
     </Grid>
   );

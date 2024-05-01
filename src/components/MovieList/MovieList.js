@@ -5,10 +5,9 @@ import useStyles from './styles';
 
 function MovieList({ movies, numberOfMovies }) {
   const classes = useStyles();
-
   return (
     <Grid container className={classes.moviesContainer}>
-      {movies.results.slice(0, numberOfMovies).map((movie, i) => (
+      {movies.slice(0, numberOfMovies).map((movie, i) => (
         <Movie key={movie.id} movie={movie} i={i} />
       ))}
     </Grid>
