@@ -16,6 +16,8 @@ function Pagination({ currentPage, totalPages, setPage }) {
     }
   };
 
+  if (totalPages === 0) return null;
+
   return (
     <div className={classes.container}>
       <Button

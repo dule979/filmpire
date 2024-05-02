@@ -25,15 +25,22 @@ function Movie({ movie, i }) {
             src={
               movie?.poster_path
                 ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-                : 'https://fillmurray.com/200/300'
+                : 'https://picsum.photos/200/300'
             }
           />
           <Typography variant="h6" className={classes.title}>
             {movie?.title}
           </Typography>
-          <Tooltip disableTouchListener title={`${movie?.vote_average.toFixed(1)} / 10`}>
+          <Tooltip
+            disableTouchListener
+            title={`${movie?.vote_average.toFixed(1)} / 10`}
+          >
             <div>
-              <Rating readOnly value={movie?.vote_average / 2} precision={0.1} />
+              <Rating
+                readOnly
+                value={movie?.vote_average / 2}
+                precision={0.1}
+              />
             </div>
           </Tooltip>
         </Link>

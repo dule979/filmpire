@@ -69,7 +69,7 @@ function MovieInformation() {
 
   return (
     <Grid container className={classes.containerSpaceAround}>
-      <Grid item sm={12} lg={4}>
+      <Grid item sm={12} lg={4} className={classes.posterContainer}>
         <img
           alt={data?.original_title}
           src={`https://image.tmdb.org/t/p/w500/${data?.poster_path}`}
@@ -95,10 +95,7 @@ function MovieInformation() {
             </Typography>
           </Box>
           <Typography variant="h6" gutterBottom>
-            {data?.runtime}min{' '}
-            {data.spoken_languages.length > 0
-              ? `/ ${data.spoken_languages[0].name}`
-              : ''}
+            {data?.runtime}min | Language: {data.spoken_languages[0].name}
           </Typography>
         </Grid>
         <Grid item className={classes.genreContainer}>
@@ -242,18 +239,18 @@ function MovieInformation() {
         onClose={() => setOpen(false)}
         className={classes.modal}
       >
-        <div>
+        <Box display="flex" width={800} height={500}>
           {data?.videos?.results?.length > 0 && (
             <iframe
               autoPlay
               title="Trailers"
-              className={classes.video}
               style={{ border: 'none' }}
+              className={classes.video}
               src={`https://youtube.com/embed/${data.videos.results[0].key}`}
               allow="autoplay"
             />
           )}
-        </div>
+        </Box>
       </Modal>
     </Grid>
   );
